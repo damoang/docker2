@@ -1,0 +1,37 @@
+services:
+  php83-fpm-staging:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: php83-fpm-staging
+    restart: always
+    network_mode: host
+    env_file:
+      - /home/damoang/staging/.env.prod
+    volumes:
+      - /home/damoang/staging:/home/damoang/staging
+      - /home/damoang/staging/php.ini:/usr/local/etc/php/php.ini
+      - /home/damoang/docker/staging/www.conf:/usr/local/etc/php-fpm.d/www.conf
+      - /home/damoang/secure:/home/damoang/secure  # 이 라인 추가
+      - log-volume:/var/log/php
+      - session-volume:/var/lib/php/sessions
+
+  php83-fpm-prod:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: php83-fpm-prod
+    restart: always
+    network_mode: host
+    env_file:
+      - /home/damoang/www/.env.prod
+    volumes:
+      - /home/damoang/www:/home/damoang/www
+      - /home/damoang/docker/www/php.ini:/usr/local/etc/php/php.ini
+      - /home/damoang/docker/www/www.conf:/usr/local/etc/php-fpm.d/www.conf
+      - log-volume:/var/log/php
+      - session-volume:/var/lib/php/sessions
+
+volumes:
+  log-volume:
+  session-volume:
